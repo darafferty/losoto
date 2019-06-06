@@ -38,10 +38,10 @@ def run( soltab, tecsoltabOut='tec000', clocksoltabOut='clock000', offsetsoltabO
         Detect and remove bad channel before fitting, by default True.
 
     flagCut : float, optional
-        
+
 
     chi2cut : float, optional
-        
+
 
     combinePol : bool, optional
         Find a combined polarization solution, by default False.
@@ -75,10 +75,10 @@ def run( soltab, tecsoltabOut='tec000', clocksoltabOut='clock000', offsetsoltabO
     stations = soltab.getAxisValues('ant')
     station_positions = np.zeros((len(stations), 3), dtype=np.float)
     for i, station_name in enumerate(stations):
-        station_positions[i, 0] = station_dict[station_name][0]
-        station_positions[i, 1] = station_dict[station_name][1]
-        station_positions[i, 2] = station_dict[station_name][2]
-        
+        station_positions[i, 0] = station_dict[station_name.encode()][0]
+        station_positions[i, 1] = station_dict[station_name.encode()][1]
+        station_positions[i, 2] = station_dict[station_name.encode()][2]
+
     returnAxes=['ant','freq','pol','time']
     for vals, flags, coord, selection in soltab.getValuesIter(returnAxes=returnAxes,weight=True):
 
@@ -97,7 +97,7 @@ def run( soltab, tecsoltabOut='tec000', clocksoltabOut='clock000', offsetsoltabO
         axes=[i for i in soltab.getAxesNames() if i in returnAxes]
 
         # reverse time axes
-        if reverse: 
+        if reverse:
             vals = np.swapaxes(np.swapaxes(vals, 0, axes.index('time'))[::-1], 0, axes.index('time'))
             flags = np.swapaxes(np.swapaxes(flags, 0, axes.index('time'))[::-1], 0, axes.index('time'))
 
@@ -105,13 +105,13 @@ def run( soltab, tecsoltabOut='tec000', clocksoltabOut='clock000', offsetsoltabO
                          flagBadChannels=flagBadChannels,flagcut=flagCut,chi2cut=chi2cut,combine_pol=combinePol,removePhaseWraps=removePhaseWraps,fit3rdorder=fit3rdorder,circular=circular,n_proc=nproc)
         if fit3rdorder:
             clock,tec,offset,tec3rd=result
-            if reverse: 
+            if reverse:
                 clock = clock[::-1,:]
                 tec = tec[::-1,:]
                 tec3rd = tec3rd[::-1,:]
         else:
             clock,tec,offset=result
-            if reverse: 
+            if reverse:
                 clock = clock[::-1,:]
                 tec = tec[::-1,:]
 

@@ -1,9 +1,9 @@
 import os, time, glob
 
-__all__ = [ os.path.basename(f)[:-3] for f in glob.glob(os.path.dirname(__file__)+"/*.py") if f[0] != '_']
+__all__ = [ os.path.basename(f)[:-3] for f in glob.glob(os.path.dirname(__file__)+"/*.py") if os.path.basename(f)[0] != '_']
 
 for x in __all__:
-    __import__(x, locals(), globals())
+    __import__(x, locals(), globals(), level=1)
 
 class Timer(object):
     """

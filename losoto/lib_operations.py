@@ -48,9 +48,10 @@ class multiprocManager(object):
         self.procs = procs
         self._threads = []
         self.inQueue = multiprocessing.JoinableQueue()
-        self.outQueue = multiprocessing.Queue()
+        manager = multiprocessing.Manager()
+        self.outQueue = manager.Queue()
         self.runs = 0
-        
+
         logging.debug('Spawning %i threads...' % self.procs)
         for proc in range(self.procs):
             t = self.multiThread(self.inQueue, self.outQueue, funct)
@@ -113,7 +114,7 @@ def reorderAxes( a, oldAxes, newAxes ):
 def removeKeys( dic, keys = [] ):
     """
     Remove a list of keys from a dict and return a new one.
-    
+
     Parameters
     ----------
     dic : dcit
@@ -136,12 +137,12 @@ def removeKeys( dic, keys = [] ):
 def normalize_phase(phase):
     """
     Normalize phase to the range [-pi, pi].
-    
+
     Parameters
     ----------
     phase : array of float
         Phase to normalize.
-    
+
     Returns
     -------
     array of float
