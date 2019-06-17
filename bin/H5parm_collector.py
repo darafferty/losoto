@@ -125,8 +125,8 @@ for insoltab in insoltabs:
         for axis in axes:
             coords.append( np.searchsorted( allAxesVals[axis], soltab.getAxisValues(axis) ) )
         if args.squeeze:
-            allVals[np.ix_(*coords)] = np.squeeze(soltab.obj.val, axis = axes_squeeze)
-            allWeights[np.ix_(*coords)] = np.squeeze(soltab.obj.weight, axis = axes_squeeze)
+            allVals[np.ix_(*coords)] = np.squeeze(np.array(soltab.obj.val), axis = axes_squeeze)
+            allWeights[np.ix_(*coords)] = np.squeeze(np.array(soltab.obj.weight), axis = axes_squeeze)
         else:
             allVals[np.ix_(*coords)] = soltab.obj.val
             allWeights[np.ix_(*coords)] = soltab.obj.weight
